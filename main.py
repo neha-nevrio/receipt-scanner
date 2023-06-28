@@ -5,6 +5,7 @@ from docquery import document, pipeline
 
 
 app = Flask(__name__)
+p = pipeline('document-question-answering')
 
 
 @app.route('/scan', methods=['POST', 'GET'])
@@ -12,7 +13,6 @@ def request_page():
 
     try:
         args = request.args
-        p = pipeline('document-question-answering')
         doc = document.load_document(args.get('file'))
         result = receipt_scanner.receipt_scanner(p, doc)
 
