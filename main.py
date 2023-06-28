@@ -1,6 +1,7 @@
 
 from flask import *
 import receipt_scanner
+from docquery import document, pipeline
 
 
 app = Flask(__name__)
@@ -8,8 +9,15 @@ app = Flask(__name__)
 
 @app.route('/scan', methods=['POST', 'GET'])
 def request_page():
-    args = request.args
-    result = receipt_scanner.receipt_scanner(image_path=args.get('file'))
+
+    try:
+        args = request.args
+        p = pipeline('document-question-answering')
+        doc = document.load_document(args.get('file'))
+        result = receipt_scanner.receipt_scanner(p, doc)
+
+    except Exception as e:
+        result = str(e)
 
     return result
 
