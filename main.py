@@ -1,11 +1,15 @@
+
 from flask import *
 import receipt_scanner
 
+
 app = Flask(__name__)
 
-@app.route('/response', methods=['POST', 'GET'])
+
+@app.route('/scan', methods=['POST', 'GET'])
 def request_page():
-    result = receipt_scanner.receipt_scanner(image_path=url)
+    args = request.args
+    result = receipt_scanner.receipt_scanner(image_path=args.get('file'))
 
     return result
 
